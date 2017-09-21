@@ -9,8 +9,8 @@ public class Key extends Occupant {
 
     private String color;
 
-    public Key(Sprite sprite, String color) {
-        super(sprite);
+    public Key(String color, float xpos, float ypos) {
+        super(TypeMappings.getKeySpriteFromColor(color), xpos, ypos);
         this.color = color;
     }
 

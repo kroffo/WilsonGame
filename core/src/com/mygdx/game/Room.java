@@ -11,16 +11,11 @@ public class Room {
 
     public static final int NUMBER_OF_COLUMNS = 10;
     public static final int NUMBER_OF_ROWS = 8;
-    private float tileWidth;
-    private float tileHeight;
     private Tile[][] tiles;
     private Player player;
 
     public Room(String[][] layout, float width, float height) {
-        boolean startSpecified = false;
 
-        tileWidth = width / NUMBER_OF_COLUMNS;
-        tileHeight = height / NUMBER_OF_ROWS;
         this.tiles = new Tile[layout.length][layout[0].length];
 
         // Traverse the layout, creating the Tiles and their contents
@@ -33,26 +28,21 @@ public class Room {
                 // Get the details, which should be the tile type, optionally followed by a colong and occupant type
                 String[] details = row[j].trim().split(":");
                 String type = details[0];
-                Occupant occupant = null;
+                Occupant occupant;
 
                 // Get the name of the sprite file from the type of tile and if it doesn't exist, error
-                String spriteName = TypeMappings.getSpriteNameFromType(type);
+                Sprite s = TypeMappings.getTileSpriteFromType(type);
                 Tile.TileType tileType = TypeMappings.getTileType(type);
-                if (spriteName == null) {
+                if (s == null) {
                     System.err.println("Tile of type: " + type + " does not exist.");
                     System.exit(1);
                 }
 
                 // This positioning issue should really be fixed. For some reason the positions don't line up to
                 // fill the screen how you would expect.
-                float xpos = ((float)(j) - ((float)NUMBER_OF_COLUMNS)/2) * tileWidth + 3*tileWidth/2;
-                float ypos = -(((float)(i) - ((float)NUMBER_OF_ROWS)/2) * tileHeight + tileHeight/4);
+                float xpos = ((float)(j) - ((float)NUMBER_OF_COLUMNS)/2) * Game.TILE_WIDTH + 3*Game.TILE_WIDTH/2;
+                float ypos = -(((float)(i) - ((float)NUMBER_OF_ROWS)/2) * Game.TILE_HEIGHT + Game.TILE_HEIGHT/4);
 
-                Sprite s = new Sprite(new Texture(spriteName));
-                s.setOriginCenter();
-                float scaleW = tileWidth / s.getWidth();
-                float scaleH = tileHeight / s.getHeight();
-                s.setSize(s.getWidth() * scaleW, s.getHeight() * scaleH);
                 s.setPosition(xpos, ypos);
                 this.tiles[i][j] = new Tile(s, this, tileType);
 
@@ -60,25 +50,18 @@ public class Room {
                 if (details.length > 1) {
                     String occupantType = details[1].trim();
                     if (occupantType.equals("start")) {
-                        if (startSpecified) {
+                        if (Player.getPlayer() != null) {
                             System.err.println("Start specified already -- Multiple starts is prohibited.");
                             System.exit(1);
                         }
                         // Start has been found. Mark the coordinates, and set up the player
-                        occupant = Player.createPlayer(tileWidth, tileHeight, scaleW, scaleH, xpos, ypos);
+                        occupant = Player.createPlayer(xpos, ypos);
                     } else {
-                        String occupantSpriteName = TypeMappings.getSpriteNameFromType(occupantType);
-                        if (occupantSpriteName == null) {
+                        occupant = TypeMappings.createAppropriateOccupant(occupantType, xpos, ypos);
+                        if (occupant == null) {
                             System.err.println("Occupant of type: " + occupantType + " does not exist.");
                             System.exit(1);
                         }
-                        Sprite o = new Sprite(new Texture(occupantSpriteName));
-                        scaleW = tileWidth / o.getWidth();
-                        scaleH = tileHeight / o.getHeight();
-                        o.setOriginCenter();
-                        o.setSize(o.getWidth() * scaleW, o.getHeight() * scaleH);
-                        o.setPosition(xpos, ypos);
-                        occupant = TypeMappings.createAppropriateOccupant(occupantType, o);
                     }
                     this.tiles[i][j].setOccupant(occupant);
                     occupant.setLocation(this.tiles[i][j]);
@@ -94,11 +77,9 @@ public class Room {
     }
 
     public void draw(SpriteBatch batch) {
-        for (int i = 0; i < this.tiles.length; ++i) {
-            for (int j = 0; j < this.tiles[i].length; ++j) {
-                this.tiles[i][j].draw(batch);
-            }
-        }
+        for (Tile[] row : this.tiles)
+            for (Tile tile : row)
+                tile.draw(batch);
     }
 
     public Tile getLeftNeighbor(Tile t) {

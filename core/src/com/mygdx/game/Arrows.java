@@ -7,7 +7,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
  */
 public class Arrows extends Occupant {
 
-    public Arrows(Sprite sprite) {
-        super(sprite);
+    public Arrows(float xpos, float ypos) {
+        super(new Sprite(Game.ARROWS_SPRITE), xpos, ypos);
     }
 }

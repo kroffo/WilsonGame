@@ -11,9 +11,9 @@ public class Player extends ConsciousOccupant {
         return player;
     }
 
-    public static Player createPlayer(float tileWidth, float tileHeight, float scaleW, float scaleH, float xpos, float ypos) {
+    public static Player createPlayer(float xpos, float ypos) {
         if (player == null) {
-            player = new Player(tileWidth, tileHeight, scaleW, scaleH, xpos, ypos);
+            player = new Player(xpos, ypos);
         } else {
             System.err.println("Player already exists. Player creation failed.");
             System.exit(1);
@@ -21,7 +21,7 @@ public class Player extends ConsciousOccupant {
         return player;
     }
 
-    private Player(float tileWidth, float tileHeight, float scaleW, float scaleH, float xpos, float ypos) {
-        super(CharacterType.PLAYER, Orientation.LEFT, tileWidth, tileHeight, scaleW, scaleH, xpos, ypos);
+    private Player(float xpos, float ypos) {
+        super(CharacterType.PLAYER, Orientation.LEFT, xpos, ypos);
     }
 }

@@ -5,6 +5,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
@@ -17,8 +18,25 @@ public class Game extends ApplicationAdapter {
 
     // Global list of conscious occupants to step through each turn
     public static ArrayList<ConsciousOccupant> CONSCIOUS_OCCUPANTS = new ArrayList<>();
+    public static float TILE_WIDTH;
+    public static float TILE_HEIGHT;
+    public static Sprite ARROW_SPRITE;
+    public static Sprite ARROWS_SPRITE;
+    public static Sprite BLUE_KEY_SPRITE;
+    public static Sprite BOW_SPRITE;
+    public static Sprite GREEN_KEY_SPRITE;
+    public static Sprite PINK_KEY_SPRITE;
+    public static Sprite RED_KEY_SPRITE;
+    public static Sprite SWORD_SPRITE;
+    public static Sprite WATER_TILE_SPRITE;
+    public static Sprite WILSON_FACING_LEFT_SPRITE;
+    public static Sprite WILSON_FACING_RIGHT_SPRITE;
+    public static Sprite WILSON_FACING_DOWN_SPRITE;
+    public static Sprite WILSON_FACING_UP_SPRITE;
+    public static Sprite WOOD_TILE_SPRITE;
+    public static Sprite YELLOW_KEY_SPRITE;
 
-	SpriteBatch batch;
+    SpriteBatch batch;
     private OrthographicCamera camera;
 	private float screenWidth, screenHeight;
 	private Room room;
@@ -34,6 +52,9 @@ public class Game extends ApplicationAdapter {
 	public void create () {
         screenHeight = Gdx.graphics.getHeight();
         screenWidth = Gdx.graphics.getWidth();
+
+        init_base_sprites(screenWidth, screenHeight);
+
         camera = new OrthographicCamera(screenHeight, screenWidth);
         camera.setToOrtho(false);
 
@@ -119,4 +140,100 @@ public class Game extends ApplicationAdapter {
 	public void dispose () {
 		batch.dispose();
 	}
+
+	private void init_base_sprites(float width, float height) {
+        Game.TILE_WIDTH = width / Room.NUMBER_OF_COLUMNS;
+        Game.TILE_HEIGHT = height / Room.NUMBER_OF_ROWS;
+
+        Game.ARROW_SPRITE = new Sprite(new Texture("Arrow.png"));
+        Game.ARROW_SPRITE.setOriginCenter();
+        Game.ARROW_SPRITE.setSize(
+                Game.ARROW_SPRITE.getWidth() * (Game.TILE_WIDTH / Game.ARROW_SPRITE.getWidth()),
+                Game.ARROW_SPRITE.getHeight() * (Game.TILE_HEIGHT / Game.ARROW_SPRITE.getHeight())
+        );
+        Game.ARROWS_SPRITE = new Sprite(new Texture("Arrows.png"));
+        Game.ARROWS_SPRITE.setOriginCenter();
+        Game.ARROWS_SPRITE.setSize(
+                Game.ARROWS_SPRITE.getWidth() * (Game.TILE_WIDTH / Game.ARROWS_SPRITE.getWidth()),
+                Game.ARROWS_SPRITE.getHeight() * (Game.TILE_HEIGHT / Game.ARROWS_SPRITE.getHeight())
+        );
+        Game.BLUE_KEY_SPRITE = new Sprite(new Texture("BlueKey.png"));
+        Game.BLUE_KEY_SPRITE.setOriginCenter();
+        Game.BLUE_KEY_SPRITE.setSize(
+                Game.BLUE_KEY_SPRITE.getWidth() * (Game.TILE_WIDTH / Game.BLUE_KEY_SPRITE.getWidth()),
+                Game.BLUE_KEY_SPRITE.getHeight() * (Game.TILE_HEIGHT / Game.BLUE_KEY_SPRITE.getHeight())
+        );
+        Game.BOW_SPRITE = new Sprite(new Texture("Bow.png"));
+        Game.BOW_SPRITE.setOriginCenter();
+        Game.BOW_SPRITE.setSize(
+                Game.BOW_SPRITE.getWidth() * (Game.TILE_WIDTH / Game.BOW_SPRITE.getWidth()),
+                Game.BOW_SPRITE.getHeight() * (Game.TILE_HEIGHT / Game.BOW_SPRITE.getHeight())
+        );
+        Game.GREEN_KEY_SPRITE = new Sprite(new Texture("GreenKey.png"));
+        Game.GREEN_KEY_SPRITE.setOriginCenter();
+        Game.GREEN_KEY_SPRITE.setSize(
+                Game.GREEN_KEY_SPRITE.getWidth() * (Game.TILE_WIDTH / Game.GREEN_KEY_SPRITE.getWidth()),
+                Game.GREEN_KEY_SPRITE.getHeight() * (Game.TILE_HEIGHT / Game.GREEN_KEY_SPRITE.getHeight())
+        );
+        Game.PINK_KEY_SPRITE = new Sprite(new Texture("PinkKey.png"));
+        Game.PINK_KEY_SPRITE.setOriginCenter();
+        Game.PINK_KEY_SPRITE.setSize(
+                Game.PINK_KEY_SPRITE.getWidth() * (Game.TILE_WIDTH / Game.PINK_KEY_SPRITE.getWidth()),
+                Game.PINK_KEY_SPRITE.getHeight() * (Game.TILE_HEIGHT / Game.PINK_KEY_SPRITE.getHeight())
+        );
+        Game.RED_KEY_SPRITE = new Sprite(new Texture("RedKey.png"));
+        Game.RED_KEY_SPRITE.setOriginCenter();
+        Game.RED_KEY_SPRITE.setSize(
+                Game.RED_KEY_SPRITE.getWidth() * (Game.TILE_WIDTH / Game.RED_KEY_SPRITE.getWidth()),
+                Game.RED_KEY_SPRITE.getHeight() * (Game.TILE_HEIGHT / Game.RED_KEY_SPRITE.getHeight())
+        );
+        Game.SWORD_SPRITE = new Sprite(new Texture("Sword.png"));
+        Game.SWORD_SPRITE.setOriginCenter();
+        Game.SWORD_SPRITE.setSize(
+                Game.SWORD_SPRITE.getWidth() * (Game.TILE_WIDTH / Game.SWORD_SPRITE.getWidth()),
+                Game.SWORD_SPRITE.getHeight() * (Game.TILE_HEIGHT / Game.SWORD_SPRITE.getHeight())
+        );
+        Game.WATER_TILE_SPRITE = new Sprite(new Texture("WaterTile.png"));
+        Game.WATER_TILE_SPRITE.setOriginCenter();
+        Game.WATER_TILE_SPRITE.setSize(
+                Game.WATER_TILE_SPRITE.getWidth() * (Game.TILE_WIDTH / Game.WATER_TILE_SPRITE.getWidth()),
+                Game.WATER_TILE_SPRITE.getHeight() * (Game.TILE_HEIGHT / Game.WATER_TILE_SPRITE.getHeight())
+        );
+        Game.WILSON_FACING_LEFT_SPRITE = new Sprite(new Texture("WilsonFacingLeft.png"));
+        Game.WILSON_FACING_LEFT_SPRITE.setOriginCenter();
+        Game.WILSON_FACING_LEFT_SPRITE.setSize(
+                Game.WILSON_FACING_LEFT_SPRITE.getWidth() * (Game.TILE_WIDTH / Game.WILSON_FACING_LEFT_SPRITE.getWidth()),
+                Game.WILSON_FACING_LEFT_SPRITE.getHeight() * (Game.TILE_HEIGHT / Game.WILSON_FACING_LEFT_SPRITE.getHeight())
+        );
+        Game.WILSON_FACING_RIGHT_SPRITE = new Sprite(new Texture("WilsonFacingRight.png"));
+        Game.WILSON_FACING_RIGHT_SPRITE.setOriginCenter();
+        Game.WILSON_FACING_RIGHT_SPRITE.setSize(
+                Game.WILSON_FACING_RIGHT_SPRITE.getWidth() * (Game.TILE_WIDTH / Game.WILSON_FACING_RIGHT_SPRITE.getWidth()),
+                Game.WILSON_FACING_RIGHT_SPRITE.getHeight() * (Game.TILE_HEIGHT / Game.WILSON_FACING_RIGHT_SPRITE.getHeight())
+        );
+        Game.WILSON_FACING_DOWN_SPRITE = new Sprite(new Texture("WilsonFacingLeft.png"));
+        Game.WILSON_FACING_DOWN_SPRITE.setOriginCenter();
+        Game.WILSON_FACING_DOWN_SPRITE.setSize(
+                Game.WILSON_FACING_DOWN_SPRITE.getWidth() * (Game.TILE_WIDTH / Game.WILSON_FACING_DOWN_SPRITE.getWidth()),
+                Game.WILSON_FACING_DOWN_SPRITE.getHeight() * (Game.TILE_HEIGHT / Game.WILSON_FACING_DOWN_SPRITE.getHeight())
+        );
+        Game.WILSON_FACING_UP_SPRITE = new Sprite(new Texture("WilsonFacingRight.png"));
+        Game.WILSON_FACING_UP_SPRITE.setOriginCenter();
+        Game.WILSON_FACING_UP_SPRITE.setSize(
+                Game.WILSON_FACING_UP_SPRITE.getWidth() * (Game.TILE_WIDTH / Game.WILSON_FACING_UP_SPRITE.getWidth()),
+                Game.WILSON_FACING_UP_SPRITE.getHeight() * (Game.TILE_HEIGHT / Game.WILSON_FACING_UP_SPRITE.getHeight())
+        );
+        Game.WOOD_TILE_SPRITE = new Sprite(new Texture("WoodTile.png"));
+        Game.WOOD_TILE_SPRITE.setOriginCenter();
+        Game.WOOD_TILE_SPRITE.setSize(
+                Game.WOOD_TILE_SPRITE.getWidth() * (Game.TILE_WIDTH / Game.WOOD_TILE_SPRITE.getWidth()),
+                Game.WOOD_TILE_SPRITE.getHeight() * (Game.TILE_HEIGHT / Game.WOOD_TILE_SPRITE.getHeight())
+        );
+        Game.YELLOW_KEY_SPRITE = new Sprite(new Texture("YellowKey.png"));
+        Game.YELLOW_KEY_SPRITE.setOriginCenter();
+        Game.YELLOW_KEY_SPRITE.setSize(
+                Game.YELLOW_KEY_SPRITE.getWidth() * (Game.TILE_WIDTH / Game.YELLOW_KEY_SPRITE.getWidth()),
+                Game.YELLOW_KEY_SPRITE.getHeight() * (Game.TILE_HEIGHT / Game.YELLOW_KEY_SPRITE.getHeight())
+        );
+    }
 }

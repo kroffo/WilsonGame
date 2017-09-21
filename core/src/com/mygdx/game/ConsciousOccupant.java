@@ -6,7 +6,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 /**
  * Created by kennethroffo on 9/17/17.
  */
-public class ConsciousOccupant extends Occupant {
+public class ConsciousOccupant extends Occupant implements Steppable {
 
     public enum CharacterType {
         PLAYER
@@ -29,28 +29,26 @@ public class ConsciousOccupant extends Occupant {
     private Tile target;
     private double movementSpeed;
 
-    public ConsciousOccupant(CharacterType characterType, Orientation orientation, float tileWidth, float tileHeight, float scaleW, float scaleH, float xpos, float ypos) {
-        super(null);
-        Sprite[] sprites = new Sprite[4];
-        String[] spriteNames = TypeMappings.getSpriteNames(characterType);
-        if (spriteNames == null) {
+    public ConsciousOccupant(CharacterType characterType, Orientation orientation, float xpos, float ypos) {
+
+        // This is kind of a hack since super has to be the first line,
+        // but I need to get the sprites based on the character type first
+        super(new Sprite(Game.WILSON_FACING_LEFT_SPRITE), xpos, ypos);
+        Sprite[] sprites = TypeMappings.getCharacterSprites(characterType);
+        if (sprites == null) {
             System.err.println("Invalid character type passed to ConsciousOccupant. Cannot get sprite names.");
             System.exit(1);
         }
-        this.leftSprite = sprites[0] = new Sprite(new Texture(spriteNames[0]));
-        this.rightSprite = sprites[1] = new Sprite(new Texture(spriteNames[1]));
-        this.downSprite = sprites[2] = new Sprite(new Texture(spriteNames[2]));
-        this.upSprite = sprites[3] = new Sprite(new Texture(spriteNames[3]));
+        this.leftSprite = sprites[0];
+        this.rightSprite = sprites[1];
+        this.downSprite = sprites[2];
+        this.upSprite = sprites[3];
 
         for (Sprite s : sprites) {
-            scaleW = tileWidth / s.getWidth();
-            scaleH = tileHeight / s.getHeight();
-            s.setOriginCenter();
-            s.setSize(s.getWidth() * scaleW, s.getHeight() * scaleH);
             s.setPosition(xpos, ypos);
         }
-        this.setSprite(leftSprite);
 
+        // Sets the orientation, as well as setting the sprite to the appropriate sprite
         this.setOrientation(orientation);
 
         this.moveStart = -1;
@@ -144,7 +142,7 @@ public class ConsciousOccupant extends Occupant {
     }
 
     // Step forward in time for the animation of moving
-    public void stepMovement() {
+    private void stepMovement() {
         long elapsed = System.currentTimeMillis() - this.moveStart;
         if (elapsed < this.movementSpeed) {
             float x = this.getLocation().getX() + (( target.getX() - this.getLocation().getX() ) * (elapsed / (float)this.movementSpeed));

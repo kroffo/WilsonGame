@@ -11,8 +11,9 @@ public abstract class Occupant {
     protected Sprite sprite;
     private Tile location;
 
-    public Occupant(Sprite s) {
+    public Occupant(Sprite s, float xpos, float ypos) {
         this.sprite = s;
+        this.sprite.setPosition(xpos, ypos);
     }
 
     protected void setSprite(Sprite sprite) {

@@ -7,51 +7,52 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
  */
 public class TypeMappings {
 
-    public static String getSpriteNameFromType(String type) {
+    public static Sprite getTileSpriteFromType(String type) {
         switch(type) {
             case "water":
-                return "WaterTile.png";
+                return new Sprite(Game.WATER_TILE_SPRITE);
             case "wood":
-                return "WoodTile.png";
-            case "sword":
-                return "Sword.png";
-            case "bow":
-                return "Bow.png";
-            case "arrows":
-                return "Arrows.png";
-            case "greenkey":
-                return "GreenKey.png";
-            case "bluekey":
-                return "BlueKey.png";
-            case "redkey":
-                return "RedKey.png";
-            case "yellowkey":
-                return "YellowKey.png";
-            case "pinkkey":
-                return "PinkKey.png";
+                return new Sprite(Game.WOOD_TILE_SPRITE);
             default:
                 return null;
         }
     }
 
-    public static Occupant createAppropriateOccupant(String type, Sprite sprite) {
+    public static Sprite getKeySpriteFromColor(String color) {
+        switch(color) {
+            case "blue":
+                return new Sprite(Game.BLUE_KEY_SPRITE);
+            case "green":
+                return new Sprite(Game.GREEN_KEY_SPRITE);
+            case "pink":
+                return new Sprite(Game.PINK_KEY_SPRITE);
+            case "red":
+                return new Sprite(Game.RED_KEY_SPRITE);
+            case "yellow":
+                return new Sprite(Game.YELLOW_KEY_SPRITE);
+            default:
+                return null;
+        }
+    }
+
+    public static Occupant createAppropriateOccupant(String type, float xpos, float ypos) {
         switch(type) {
             case "sword":
-                return new Sword(sprite);
+                return new Sword(xpos, ypos);
             case "bow":
-                return new Bow(sprite);
+                return new Bow(xpos, ypos);
             case "arrows":
-                return new Arrows(sprite);
+                return new Arrows(xpos, ypos);
             case "greenkey":
-                return new Key(sprite,"green");
+                return new Key("green", xpos, ypos);
             case "bluekey":
-                return new Key(sprite,"blue");
+                return new Key("blue", xpos, ypos);
             case "redkey":
-                return new Key(sprite,"red");
+                return new Key("red", xpos, ypos);
             case "yellowkey":
-                return new Key(sprite,"yellow");
+                return new Key("yellow", xpos, ypos);
             case "pinkkey":
-                return new Key(sprite,"pink");
+                return new Key("pink", xpos, ypos);
             default:
                 return null;
         }
@@ -68,9 +69,16 @@ public class TypeMappings {
         }
     }
 
-    public static String[] getSpriteNames(ConsciousOccupant.CharacterType ctype) {
+    // Returns an array sprites for orientations left, right, down, up of the supplied character type
+    // or null if no such character exists
+    public static Sprite[] getCharacterSprites(ConsciousOccupant.CharacterType ctype) {
         if (ctype == ConsciousOccupant.CharacterType.PLAYER) {
-            String[] sprites = {"WilsonFacingLeft.png", "WilsonFacingRight.png", "WilsonFacingLeft.png", "WilsonFacingRight.png"};
+            Sprite[] sprites = {
+                    new Sprite(Game.WILSON_FACING_LEFT_SPRITE),
+                    new Sprite(Game.WILSON_FACING_RIGHT_SPRITE),
+                    new Sprite(Game.WILSON_FACING_DOWN_SPRITE),
+                    new Sprite(Game.WILSON_FACING_UP_SPRITE),
+            };
             return sprites;
         }
         else return null;
