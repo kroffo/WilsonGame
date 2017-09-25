@@ -18,6 +18,12 @@ public class Tile {
     private Room room;
     private Occupant occupant;
 
+    // To be used when an occupant is moving to this tile
+    // Don't allow things to move here when busy, but keep the
+    // current occupant (an item perhaps) until the moving one
+    // is here so it will be rendered
+    private boolean busy;
+
     public Tile(Sprite s, Room r, TileType t) {
         this.type = t;
         this.sprite = s;
@@ -28,12 +34,19 @@ public class Tile {
         return this.occupant != null;
     }
 
+    public Occupant getOccupant() {
+        return this.occupant;
+    }
+
     public void setOccupant(Occupant occupant) {
         this.occupant = occupant;
     }
 
     public void draw(SpriteBatch batch) {
         this.sprite.draw(batch);
+    }
+
+    public void drawOccupants(SpriteBatch batch) {
         if(this.occupant != null) {
             this.occupant.draw(batch);
         }
@@ -69,5 +82,13 @@ public class Tile {
 
     public TileType getType() {
         return this.type;
+    }
+
+    public void setBusy(boolean value) {
+        this.busy = value;
+    }
+
+    public boolean isBusy() {
+        return busy;
     }
 }

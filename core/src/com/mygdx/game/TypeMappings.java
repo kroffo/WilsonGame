@@ -35,6 +35,11 @@ public class TypeMappings {
         }
     }
 
+    public static String[] getKeyColors() {
+        String[] colors = {"blue", "green", "pink", "red", "yellow"};
+        return colors;
+    }
+
     public static Occupant createAppropriateOccupant(String type, float xpos, float ypos) {
         switch(type) {
             case "sword":
@@ -43,16 +48,18 @@ public class TypeMappings {
                 return new Bow(xpos, ypos);
             case "arrows":
                 return new Arrows(xpos, ypos);
-            case "greenkey":
-                return new Key("green", xpos, ypos);
+            case "potion":
+                return new Potion(xpos, ypos);
             case "bluekey":
                 return new Key("blue", xpos, ypos);
+            case "greenkey":
+                return new Key("green", xpos, ypos);
+            case "pinkkey":
+                return new Key("pink", xpos, ypos);
             case "redkey":
                 return new Key("red", xpos, ypos);
             case "yellowkey":
                 return new Key("yellow", xpos, ypos);
-            case "pinkkey":
-                return new Key("pink", xpos, ypos);
             default:
                 return null;
         }

@@ -80,6 +80,9 @@ public class Room {
         for (Tile[] row : this.tiles)
             for (Tile tile : row)
                 tile.draw(batch);
+        for (Tile[] row : this.tiles)
+            for (Tile tile : row)
+                tile.drawOccupants(batch);
     }
 
     public Tile getLeftNeighbor(Tile t) {

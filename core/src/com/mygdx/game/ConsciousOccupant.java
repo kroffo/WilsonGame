@@ -6,7 +6,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 /**
  * Created by kennethroffo on 9/17/17.
  */
-public class ConsciousOccupant extends Occupant implements Steppable {
+public abstract class ConsciousOccupant extends Occupant implements Steppable {
 
     public enum CharacterType {
         PLAYER
@@ -55,7 +55,7 @@ public class ConsciousOccupant extends Occupant implements Steppable {
         this.target = null;
         this.movementSpeed = TypeMappings.getCharacterTypeSpeed(characterType);
 
-        Game.CONSCIOUS_OCCUPANTS.add(this);
+        Game.STEPPABLES.add(this);
     }
 
     public void setOrientation(Orientation orientation) {
@@ -91,7 +91,7 @@ public class ConsciousOccupant extends Occupant implements Steppable {
         return this.moveStart > -1;
     }
 
-    public void step() {
+    public void step(double delta) {
         if (this.moveStart > -1) {
             this.stepMovement();
         }
@@ -122,16 +122,20 @@ public class ConsciousOccupant extends Occupant implements Steppable {
         startMoveIfPossible(target);
     }
 
+    // Together these methods will enable movement to occupied tiles
+    public abstract boolean isTileEnterable(Tile target);
+    public abstract void arriveAtTile(Tile target);
+
     private void startMoveIfPossible(Tile target) {
         // If the target is a regular tile and is not occupied, move there!
-        if ( target != null && target.getType() == Tile.TileType.REGULAR && !target.isOccupied()) {
+        if ( target != null && this.isTileEnterable(target)) {
             this.moveStart = System.currentTimeMillis();
             this.target = target;
 
             // Set the target as occupied so nothing else can occupy it
             // This means both the target and current tile are occupied by this
             // occupant.
-            target.setOccupant(this);
+            target.setBusy(true);
         } else {
             // Play a sound to indicate the move is not possible at the moment
         }
@@ -151,9 +155,14 @@ public class ConsciousOccupant extends Occupant implements Steppable {
         } else {
             // Movement time completed. Finish the move
             this.moveStart = -1;
-            this.getLocation().setOccupant(null);
+
+            // Use a conditional in case something else moved to this location somehow
+            if (this.getLocation().getOccupant() == this) this.getLocation().setOccupant(null);
             this.setLocation(this.target);
             this.sprite.setPosition(target.getX(), target.getY());
+            this.arriveAtTile(target);
+            this.target.setOccupant(this);
+            this.target.setBusy(false);
             this.target = null;
         }
     }

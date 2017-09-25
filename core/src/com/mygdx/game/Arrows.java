@@ -7,7 +7,19 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
  */
 public class Arrows extends Occupant {
 
+    private int numberOfArrows;
+
     public Arrows(float xpos, float ypos) {
         super(new Sprite(Game.ARROWS_SPRITE), xpos, ypos);
+        this.numberOfArrows = 2;
+    }
+
+    public Arrows(float xpos, float ypos, int numberOfArrows) {
+        super(new Sprite(Game.ARROWS_SPRITE), xpos, ypos);
+        this.numberOfArrows = numberOfArrows;
+    }
+
+    public int getNumberOfArrows() {
+        return this.numberOfArrows;
     }
 }
