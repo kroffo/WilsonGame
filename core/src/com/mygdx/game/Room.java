@@ -77,6 +77,8 @@ public class Room {
     }
 
     public void draw(SpriteBatch batch) {
+        // Draw all the tiles before drawing their occupants
+        // to prevent tiles from appearing on top of things.
         for (Tile[] row : this.tiles)
             for (Tile tile : row)
                 tile.draw(batch);

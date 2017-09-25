@@ -21,6 +21,7 @@ public class StatusBar {
     private StatusIcon pinkKeyIcon;
     private StatusIcon redKeyIcon;
     private StatusIcon yellowKeyIcon;
+    private HealthBar healthBar;
 
 
     private Sprite bar;
@@ -58,6 +59,11 @@ public class StatusBar {
         this.redKeyIcon = new StatusIcon(iconX, iconY, iconWidth, iconHeight, Game.RED_KEY_SPRITE, false, -1);
         iconX += iconWidth + iconSpacing;
         this.yellowKeyIcon = new StatusIcon(iconX, iconY, iconWidth, iconHeight, Game.YELLOW_KEY_SPRITE, false, -1);
+        iconX += iconWidth + iconSpacing;
+
+        float healthBarWidth = this.width + xpos - iconX - iconSpacing;
+        float healthBarHeight = this.height*3/10;
+        this.healthBar = new HealthBar(iconX, ypos + this.height*6/10, healthBarWidth, healthBarHeight, Player.MAX_HEALTH);
     }
 
     private void updateIcons() {
@@ -71,6 +77,7 @@ public class StatusBar {
         Bow bow = this.player.getBow();
         if (bow != null) {
             this.bowIcon.showIcon();
+            this.bowIcon.setNumber(this.player.getNumberOfArrows());
         } else {
             this.bowIcon.hideIcon();
         }
@@ -111,6 +118,7 @@ public class StatusBar {
             this.yellowKeyIcon.showIcon();
         }
 
+        this.healthBar.updateWidth(player.getHealth());
     }
 
     public void draw(SpriteBatch batch) {
@@ -124,6 +132,7 @@ public class StatusBar {
         this.pinkKeyIcon.draw(batch);
         this.redKeyIcon.draw(batch);
         this.yellowKeyIcon.draw(batch);
+        this.healthBar.draw(batch);
     }
 
     public void translate(float x, float y) {
@@ -136,5 +145,6 @@ public class StatusBar {
         this.pinkKeyIcon.translate(x, y);
         this.redKeyIcon.translate(x, y);
         this.yellowKeyIcon.translate(x, y);
+        this.healthBar.translate(x, y);
     }
 }

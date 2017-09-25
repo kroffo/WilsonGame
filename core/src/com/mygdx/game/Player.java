@@ -8,8 +8,9 @@ import java.util.HashMap;
  */
 public class Player extends ConsciousOccupant {
 
+    public static int MAX_HEALTH = 100;
+
     private static Player player;
-    private static int MAX_HEALTH = 100;
     private Sword sword;
     private Bow bow;
     private int arrows;
@@ -111,6 +112,10 @@ public class Player extends ConsciousOccupant {
 
     public int getNumberOfColoredKeys(String color) {
         return this.keys.get(color);
+    }
+
+    public int getHealth() {
+        return this.health;
     }
 
     public boolean isTileEnterable(Tile target) {
