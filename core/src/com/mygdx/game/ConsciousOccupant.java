@@ -1,7 +1,10 @@
 package com.mygdx.game;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.utils.Array;
 
 /**
  * Created by kennethroffo on 9/17/17.
@@ -24,6 +27,11 @@ public abstract class ConsciousOccupant extends Occupant implements Steppable {
     private Sprite rightSprite;
     private Sprite downSprite;
     private Sprite upSprite;
+    private Animation<Texture> leftAnimation;
+    private Animation<Texture> rightAnimation;
+    private Animation<Texture> downAnimation;
+    private Animation<Texture> upAnimation;
+    private Animation<Texture> currentAnimation;
     private Orientation orientation;
     private long moveStart;
     private Tile target;
@@ -35,6 +43,7 @@ public abstract class ConsciousOccupant extends Occupant implements Steppable {
         // but I need to get the sprites based on the character type first
         super(new Sprite(Game.WILSON_FACING_LEFT_SPRITE), xpos, ypos);
         Sprite[] sprites = TypeMappings.getCharacterSprites(characterType);
+        Array<Animation<Texture>> animations = TypeMappings.getCharacterAnimations(characterType);
         if (sprites == null) {
             System.err.println("Invalid character type passed to ConsciousOccupant. Cannot get sprite names.");
             System.exit(1);
@@ -43,6 +52,11 @@ public abstract class ConsciousOccupant extends Occupant implements Steppable {
         this.rightSprite = sprites[1];
         this.downSprite = sprites[2];
         this.upSprite = sprites[3];
+        this.leftAnimation = animations.get(0);
+        this.rightAnimation = animations.get(1);
+        this.downAnimation = animations.get(2);
+        this.upAnimation = animations.get(3);
+
 
         for (Sprite s : sprites) {
             s.setPosition(xpos, ypos);
@@ -101,34 +115,57 @@ public abstract class ConsciousOccupant extends Occupant implements Steppable {
     public void moveLeft() {
         this.setOrientation(Orientation.LEFT);
         Tile target = this.getLocation().getLeftNeighbor();
-        startMoveIfPossible(target);
+        if (movePossible(target)) {
+            this.currentAnimation = this.leftAnimation;
+            startMove(target);
+        } else {
+            // Play bump sound
+        }
     }
 
     public void moveRight() {
         this.setOrientation(Orientation.RIGHT);
         Tile target = this.getLocation().getRightNeighbor();
-        startMoveIfPossible(target);
+        if (movePossible(target)) {
+            this.currentAnimation = this.rightAnimation;
+            startMove(target);
+        } else {
+            // Play bump sound
+        }
     }
 
     public void moveDown() {
         this.setOrientation(Orientation.DOWN);
         Tile target = this.getLocation().getDownNeighbor();
-        startMoveIfPossible(target);
+        if (movePossible(target)) {
+            this.currentAnimation = this.downAnimation;
+            startMove(target);
+        } else {
+            // Play bump sound
+        }
     }
 
     public void moveUp() {
         this.setOrientation(Orientation.UP);
         Tile target = this.getLocation().getUpNeighbor();
-        startMoveIfPossible(target);
+        if (movePossible(target)) {
+            this.currentAnimation = this.upAnimation;
+            startMove(target);
+        } else {
+            // Play bump sound
+        }
     }
 
     // Together these methods will enable movement to occupied tiles
     public abstract boolean isTileEnterable(Tile target);
     public abstract void arriveAtTile(Tile target);
 
-    private void startMoveIfPossible(Tile target) {
-        // If the target is a regular tile and is not occupied, move there!
-        if ( target != null && this.isTileEnterable(target)) {
+    private boolean movePossible(Tile target) {
+        return target != null && this.isTileEnterable(target);
+    }
+
+    private void startMove(Tile target) {
+        if ( target != null ) {
             this.moveStart = System.currentTimeMillis();
             this.target = target;
 
@@ -136,8 +173,6 @@ public abstract class ConsciousOccupant extends Occupant implements Steppable {
             // This means both the target and current tile are occupied by this
             // occupant.
             target.setBusy(true);
-        } else {
-            // Play a sound to indicate the move is not possible at the moment
         }
     }
 
@@ -164,6 +199,17 @@ public abstract class ConsciousOccupant extends Occupant implements Steppable {
             this.target.setOccupant(this);
             this.target.setBusy(false);
             this.target = null;
+            this.currentAnimation = null;
+        }
+    }
+
+    public void draw(SpriteBatch batch) {
+        if (this.currentAnimation != null) {
+            float delta = System.currentTimeMillis() - this.moveStart;
+            System.out.println(delta + " " + this.currentAnimation.getFrameDuration() + " " + this.currentAnimation.getAnimationDuration());
+            batch.draw(this.currentAnimation.getKeyFrame(delta), this.getX(), this.getY(), Game.TILE_WIDTH, Game.TILE_HEIGHT);
+        } else {
+            super.draw(batch);
         }
     }
 }

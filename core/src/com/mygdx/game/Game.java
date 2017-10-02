@@ -6,9 +6,8 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.*;
+import com.badlogic.gdx.utils.Array;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -23,6 +22,8 @@ public class Game extends ApplicationAdapter {
     public static float SCREEN_WIDTH;
     public static float TILE_WIDTH;
     public static float TILE_HEIGHT;
+
+    // Sprite declarations
     public static Sprite ARROW_SPRITE;
     public static Sprite ARROWS_SPRITE;
     public static Sprite BLUE_KEY_SPRITE;
@@ -39,6 +40,9 @@ public class Game extends ApplicationAdapter {
     public static Sprite WILSON_FACING_UP_SPRITE;
     public static Sprite WOOD_TILE_SPRITE;
     public static Sprite YELLOW_KEY_SPRITE;
+
+    // Animation declarations
+    public static Animation<Texture> WILSON_WALKING_DOWN_ANIMATION;
 
     public static BitmapFont FONT;
 
@@ -62,6 +66,7 @@ public class Game extends ApplicationAdapter {
         SCREEN_WIDTH = Gdx.graphics.getWidth();
 
         init_base_sprites();
+        init_base_animations();
 
         camera = new OrthographicCamera(SCREEN_WIDTH, SCREEN_HEIGHT);
         camera.setToOrtho(false);
@@ -213,11 +218,11 @@ public class Game extends ApplicationAdapter {
         Game.WILSON_FACING_RIGHT_SPRITE.setOriginCenter();
         Game.WILSON_FACING_RIGHT_SPRITE.setSize(Game.TILE_WIDTH, Game.TILE_HEIGHT);
 
-        Game.WILSON_FACING_DOWN_SPRITE = new Sprite(new Texture("WilsonFacingLeft.png"));
+        Game.WILSON_FACING_DOWN_SPRITE = new Sprite(new Texture("WilsonFacingDown.png"));
         Game.WILSON_FACING_DOWN_SPRITE.setOriginCenter();
         Game.WILSON_FACING_DOWN_SPRITE.setSize(Game.TILE_WIDTH, Game.TILE_HEIGHT);
 
-        Game.WILSON_FACING_UP_SPRITE = new Sprite(new Texture("WilsonFacingRight.png"));
+        Game.WILSON_FACING_UP_SPRITE = new Sprite(new Texture("WilsonFacingUp.png"));
         Game.WILSON_FACING_UP_SPRITE.setOriginCenter();
         Game.WILSON_FACING_UP_SPRITE.setSize(Game.TILE_WIDTH, Game.TILE_HEIGHT);
 
@@ -228,6 +233,19 @@ public class Game extends ApplicationAdapter {
         Game.YELLOW_KEY_SPRITE = new Sprite(new Texture("YellowKey.png"));
         Game.YELLOW_KEY_SPRITE.setOriginCenter();
         Game.YELLOW_KEY_SPRITE.setSize(Game.TILE_WIDTH, Game.TILE_HEIGHT);
+    }
+
+    private void init_base_animations() {
+        float width = SCREEN_WIDTH;
+        float height = SCREEN_HEIGHT;
+
+        Array<Texture> tr_list = new Array<Texture>();
+        for (int i = 0; i < 8; ++i) {
+            System.out.println("Loading WilsonWalkingDown" + ( i + 1) + ".png");
+            tr_list.add(new Texture("WilsonWalkingDown" + (i + 1) + ".png"));
+        }
+
+        Game.WILSON_WALKING_DOWN_ANIMATION = new Animation<Texture>(1, tr_list);
     }
 
 }

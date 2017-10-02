@@ -1,6 +1,9 @@
 package com.mygdx.game;
 
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.utils.Array;
 
 /**
  * Created by kennethroffo on 9/17/17.
@@ -87,6 +90,19 @@ public class TypeMappings {
                     new Sprite(Game.WILSON_FACING_UP_SPRITE),
             };
             return sprites;
+        }
+        else return null;
+    }
+
+    public static Array<Animation<Texture>> getCharacterAnimations(ConsciousOccupant.CharacterType ctype) {
+        float speed = (float)getCharacterTypeSpeed(ctype) / 8;
+        if (ctype == ConsciousOccupant.CharacterType.PLAYER) {
+            Array<Animation<Texture>> animations = new Array<Animation<Texture>>();
+            animations.add(new Animation<Texture>(speed, Game.WILSON_WALKING_DOWN_ANIMATION.getKeyFrames()));
+            animations.add(new Animation<Texture>(speed, Game.WILSON_WALKING_DOWN_ANIMATION.getKeyFrames()));
+            animations.add(new Animation<Texture>(speed, Game.WILSON_WALKING_DOWN_ANIMATION.getKeyFrames()));
+            animations.add(new Animation<Texture>(speed, Game.WILSON_WALKING_DOWN_ANIMATION.getKeyFrames()));
+            return animations;
         }
         else return null;
     }
