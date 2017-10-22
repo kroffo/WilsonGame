@@ -94,20 +94,35 @@ public class TypeMappings {
         else return null;
     }
 
-    public static Array<Animation<Texture>> getCharacterAnimations(ConsciousOccupant.CharacterType ctype) {
-        float speed = (float)getCharacterTypeSpeed(ctype) / 8;
+    // Returns an array of sprites for striking orientations left, right, down, up of the supplied character type
+    // or null if no such character exists
+    public static Sprite[] getCharacterStrikeSprites(ConsciousOccupant.CharacterType ctype) {
+        if (ctype == ConsciousOccupant.CharacterType.PLAYER) {
+            Sprite[] sprites = {
+                    new Sprite(Game.WILSON_STRIKING_LEFT_SPRITE),
+                    new Sprite(Game.WILSON_STRIKING_RIGHT_SPRITE),
+                    new Sprite(Game.WILSON_STRIKING_DOWN_SPRITE),
+                    new Sprite(Game.WILSON_STRIKING_UP_SPRITE),
+            };
+            return sprites;
+        }
+        else return null;
+    }
+
+    public static Array<Animation<Texture>> getCharacterWalkAnimations(ConsciousOccupant.CharacterType ctype) {
+        float speed = (float)getCharacterTypeWalkSpeed(ctype) / 8;
         if (ctype == ConsciousOccupant.CharacterType.PLAYER) {
             Array<Animation<Texture>> animations = new Array<Animation<Texture>>();
+            animations.add(new Animation<Texture>(speed, Game.WILSON_WALKING_LEFT_ANIMATION.getKeyFrames()));
+            animations.add(new Animation<Texture>(speed, Game.WILSON_WALKING_RIGHT_ANIMATION.getKeyFrames()));
             animations.add(new Animation<Texture>(speed, Game.WILSON_WALKING_DOWN_ANIMATION.getKeyFrames()));
-            animations.add(new Animation<Texture>(speed, Game.WILSON_WALKING_DOWN_ANIMATION.getKeyFrames()));
-            animations.add(new Animation<Texture>(speed, Game.WILSON_WALKING_DOWN_ANIMATION.getKeyFrames()));
-            animations.add(new Animation<Texture>(speed, Game.WILSON_WALKING_DOWN_ANIMATION.getKeyFrames()));
+            animations.add(new Animation<Texture>(speed, Game.WILSON_WALKING_UP_ANIMATION.getKeyFrames()));
             return animations;
         }
         else return null;
     }
 
-    public static double getCharacterTypeSpeed(ConsciousOccupant.CharacterType ctype) {
+    public static double getCharacterTypeWalkSpeed(ConsciousOccupant.CharacterType ctype) {
         if (ctype == ConsciousOccupant.CharacterType.PLAYER) {
             return 500.0;
         }

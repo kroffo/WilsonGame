@@ -5,7 +5,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 /**
  * Created by kennethroffo on 9/9/17.
  */
-public class Arrows extends Occupant {
+public class Arrows extends Item {
 
     private int numberOfArrows;
 
@@ -21,5 +21,9 @@ public class Arrows extends Occupant {
 
     public int getNumberOfArrows() {
         return this.numberOfArrows;
+    }
+
+    public void processArrivalOfOccupant(ConsciousOccupant c) {
+        c.addArrows(this.numberOfArrows);
     }
 }

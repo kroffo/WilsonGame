@@ -2,10 +2,12 @@ package com.mygdx.game;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
 
+import java.util.ConcurrentModificationException;
+
 /**
  * Created by kennethroffo on 9/9/17.
  */
-public class Key extends Occupant {
+public class Key extends Item {
 
     private String color;
 
@@ -16,5 +18,9 @@ public class Key extends Occupant {
 
     public String getColor() {
         return this.color;
+    }
+
+    public void processArrivalOfOccupant(ConsciousOccupant c) {
+        c.addKey(this);
     }
 }

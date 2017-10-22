@@ -42,7 +42,17 @@ public class Game extends ApplicationAdapter {
     public static Sprite YELLOW_KEY_SPRITE;
 
     // Animation declarations
+    public static Animation<Texture> WILSON_WALKING_LEFT_ANIMATION;
+    public static Animation<Texture> WILSON_WALKING_RIGHT_ANIMATION;
     public static Animation<Texture> WILSON_WALKING_DOWN_ANIMATION;
+    public static Animation<Texture> WILSON_WALKING_UP_ANIMATION;
+
+    // Attacking sprites
+    public static Sprite WILSON_STRIKING_LEFT_SPRITE;
+    public static Sprite WILSON_STRIKING_RIGHT_SPRITE;
+    public static Sprite WILSON_STRIKING_DOWN_SPRITE;
+    public static Sprite WILSON_STRIKING_UP_SPRITE;
+
 
     public static BitmapFont FONT;
 
@@ -114,7 +124,7 @@ public class Game extends ApplicationAdapter {
         if (!player.isBusy()) {
             if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
                 holdCount = 0;
-                player.attack();
+                player.strike();
             }
             else if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
                 player.setOrientation(ConsciousOccupant.Orientation.LEFT);
@@ -135,6 +145,8 @@ public class Game extends ApplicationAdapter {
                 player.setOrientation(ConsciousOccupant.Orientation.UP);
                 if (++holdCount > movementHoldCount)
                     player.moveUp();
+            } else if (Gdx.input.isKeyPressed(Input.Keys.X)) {
+                player.fire();
             } else {
                 holdCount = 0;
             }
@@ -210,21 +222,37 @@ public class Game extends ApplicationAdapter {
         Game.WATER_TILE_SPRITE.setOriginCenter();
         Game.WATER_TILE_SPRITE.setSize(Game.TILE_WIDTH, Game.TILE_HEIGHT);
 
-        Game.WILSON_FACING_LEFT_SPRITE = new Sprite(new Texture("WilsonFacingLeft.png"));
+        Game.WILSON_FACING_LEFT_SPRITE = new Sprite(new Texture("WilsonSprites/WilsonFacingLeft.png"));
         Game.WILSON_FACING_LEFT_SPRITE.setOriginCenter();
         Game.WILSON_FACING_LEFT_SPRITE.setSize(Game.TILE_WIDTH, Game.TILE_HEIGHT);
 
-        Game.WILSON_FACING_RIGHT_SPRITE = new Sprite(new Texture("WilsonFacingRight.png"));
+        Game.WILSON_FACING_RIGHT_SPRITE = new Sprite(new Texture("WilsonSprites/WilsonFacingRight.png"));
         Game.WILSON_FACING_RIGHT_SPRITE.setOriginCenter();
         Game.WILSON_FACING_RIGHT_SPRITE.setSize(Game.TILE_WIDTH, Game.TILE_HEIGHT);
 
-        Game.WILSON_FACING_DOWN_SPRITE = new Sprite(new Texture("WilsonFacingDown.png"));
+        Game.WILSON_FACING_DOWN_SPRITE = new Sprite(new Texture("WilsonSprites/WilsonFacingDown.png"));
         Game.WILSON_FACING_DOWN_SPRITE.setOriginCenter();
         Game.WILSON_FACING_DOWN_SPRITE.setSize(Game.TILE_WIDTH, Game.TILE_HEIGHT);
 
-        Game.WILSON_FACING_UP_SPRITE = new Sprite(new Texture("WilsonFacingUp.png"));
+        Game.WILSON_FACING_UP_SPRITE = new Sprite(new Texture("WilsonSprites/WilsonFacingUp.png"));
         Game.WILSON_FACING_UP_SPRITE.setOriginCenter();
         Game.WILSON_FACING_UP_SPRITE.setSize(Game.TILE_WIDTH, Game.TILE_HEIGHT);
+
+        Game.WILSON_STRIKING_LEFT_SPRITE = new Sprite(new Texture("WilsonSprites/WilsonStrikingLeft.png"));
+        Game.WILSON_STRIKING_LEFT_SPRITE.setOriginCenter();
+        Game.WILSON_STRIKING_LEFT_SPRITE.setSize(Game.TILE_WIDTH, Game.TILE_HEIGHT);
+
+        Game.WILSON_STRIKING_RIGHT_SPRITE = new Sprite(new Texture("WilsonSprites/WilsonStrikingRight.png"));
+        Game.WILSON_STRIKING_RIGHT_SPRITE.setOriginCenter();
+        Game.WILSON_STRIKING_RIGHT_SPRITE.setSize(Game.TILE_WIDTH, Game.TILE_HEIGHT);
+
+        Game.WILSON_STRIKING_DOWN_SPRITE = new Sprite(new Texture("WilsonSprites/WilsonStrikingRight.png"));
+        Game.WILSON_STRIKING_DOWN_SPRITE.setOriginCenter();
+        Game.WILSON_STRIKING_DOWN_SPRITE.setSize(Game.TILE_WIDTH, Game.TILE_HEIGHT);
+
+        Game.WILSON_STRIKING_UP_SPRITE = new Sprite(new Texture("WilsonSprites/WilsonStrikingRight.png"));
+        Game.WILSON_STRIKING_UP_SPRITE.setOriginCenter();
+        Game.WILSON_STRIKING_UP_SPRITE.setSize(Game.TILE_WIDTH, Game.TILE_HEIGHT);
 
         Game.WOOD_TILE_SPRITE = new Sprite(new Texture("WoodTile.png"));
         Game.WOOD_TILE_SPRITE.setOriginCenter();
@@ -238,14 +266,31 @@ public class Game extends ApplicationAdapter {
     private void init_base_animations() {
         float width = SCREEN_WIDTH;
         float height = SCREEN_HEIGHT;
+        Array<Texture> texture_list;
 
-        Array<Texture> tr_list = new Array<Texture>();
+        texture_list = new Array<Texture>();
         for (int i = 0; i < 8; ++i) {
-            System.out.println("Loading WilsonWalkingDown" + ( i + 1) + ".png");
-            tr_list.add(new Texture("WilsonWalkingDown" + (i + 1) + ".png"));
+            texture_list.add(new Texture("WilsonSprites/WilsonWalkingLeft" + (i + 1) + ".png"));
         }
+        Game.WILSON_WALKING_LEFT_ANIMATION = new Animation<Texture>(1, texture_list);
 
-        Game.WILSON_WALKING_DOWN_ANIMATION = new Animation<Texture>(1, tr_list);
+        texture_list = new Array<Texture>();
+        for (int i = 0; i < 8; ++i) {
+            texture_list.add(new Texture("WilsonSprites/WilsonWalkingRight" + (i + 1) + ".png"));
+        }
+        Game.WILSON_WALKING_RIGHT_ANIMATION = new Animation<Texture>(1, texture_list);
+
+        texture_list = new Array<Texture>();
+        for (int i = 0; i < 8; ++i) {
+            texture_list.add(new Texture("WilsonSprites/WilsonWalkingDown" + (i + 1) + ".png"));
+        }
+        Game.WILSON_WALKING_DOWN_ANIMATION = new Animation<Texture>(1, texture_list);
+
+        texture_list = new Array<Texture>();
+        for (int i = 0; i < 8; ++i) {
+            texture_list.add(new Texture("WilsonSprites/WilsonWalkingUp" + (i + 1) + ".png"));
+        }
+        Game.WILSON_WALKING_UP_ANIMATION = new Animation<Texture>(1, texture_list);
     }
 
 }

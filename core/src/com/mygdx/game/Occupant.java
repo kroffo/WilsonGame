@@ -47,4 +47,9 @@ public abstract class Occupant {
     public float getCenterY() {
         return this.sprite.getY() + this.sprite.getHeight()/2;
     }
+
+    public abstract void processArrivalOfOccupant(ConsciousOccupant c);
+
+    public abstract boolean isCollectible();
+
 }
