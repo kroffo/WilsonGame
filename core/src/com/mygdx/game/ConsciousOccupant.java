@@ -29,8 +29,8 @@ public abstract class ConsciousOccupant extends Occupant implements Steppable {
         FIRE
     }
 
-    private final static double STRIKE_SPEED = 100.0;
-    private final static double FIRE_SPEED = 100.0;
+    private final static double STRIKE_SPEED = 250.0;
+    private final static double FIRE_SPEED = 250.0;
 
     // A sprite for facing each direction
     private Sprite leftSprite;
@@ -252,7 +252,22 @@ public abstract class ConsciousOccupant extends Occupant implements Steppable {
         if (this.ableToStrike()) {
             this.attackType = AttackType.STRIKE;
             this.attackStart = System.currentTimeMillis();
-            this.strikeSprite = this.rightStrikeSprite;
+            switch(this.orientation) {
+                case LEFT:
+                    this.strikeSprite = this.leftStrikeSprite;
+                    break;
+                case RIGHT:
+                    this.strikeSprite = this.rightStrikeSprite;
+                    break;
+                case DOWN:
+                    this.strikeSprite = this.downStrikeSprite;
+                    break;
+                case UP:
+                    this.strikeSprite = this.upStrikeSprite;
+                    break;
+                default:
+                    this.strikeSprite = this.rightStrikeSprite;
+            }
             this.strikeSprite.setPosition(this.sprite.getX(), this.sprite.getY());
         }
     }

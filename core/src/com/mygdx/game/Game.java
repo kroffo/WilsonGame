@@ -246,11 +246,11 @@ public class Game extends ApplicationAdapter {
         Game.WILSON_STRIKING_RIGHT_SPRITE.setOriginCenter();
         Game.WILSON_STRIKING_RIGHT_SPRITE.setSize(Game.TILE_WIDTH, Game.TILE_HEIGHT);
 
-        Game.WILSON_STRIKING_DOWN_SPRITE = new Sprite(new Texture("WilsonSprites/WilsonStrikingRight.png"));
+        Game.WILSON_STRIKING_DOWN_SPRITE = new Sprite(new Texture("WilsonSprites/WilsonStrikingDown.png"));
         Game.WILSON_STRIKING_DOWN_SPRITE.setOriginCenter();
         Game.WILSON_STRIKING_DOWN_SPRITE.setSize(Game.TILE_WIDTH, Game.TILE_HEIGHT);
 
-        Game.WILSON_STRIKING_UP_SPRITE = new Sprite(new Texture("WilsonSprites/WilsonStrikingRight.png"));
+        Game.WILSON_STRIKING_UP_SPRITE = new Sprite(new Texture("WilsonSprites/WilsonStrikingUp.png"));
         Game.WILSON_STRIKING_UP_SPRITE.setOriginCenter();
         Game.WILSON_STRIKING_UP_SPRITE.setSize(Game.TILE_WIDTH, Game.TILE_HEIGHT);
 
